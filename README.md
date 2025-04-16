@@ -4,7 +4,7 @@
 # backup-restore-n8n-in-docker
 How to backup workflows and credentials of n8n running with docker to another self host?
 
-#in old self host import
+#in old self host backup to json files
 ```
 cd ~
 #backup workflow in old self host
@@ -29,7 +29,7 @@ docker exec -it n8n /bin/sh -c "n8n import:workflow --input=/home/node/.n8n/expo
 ```
 
 
-#update n8n newversion
+#update n8n newer version in future
 
 ```
 cd ~/n8n_data/

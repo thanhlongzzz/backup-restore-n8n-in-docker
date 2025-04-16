@@ -20,7 +20,7 @@ cd ~
 apt update && sudo apt upgrade -y
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/thanhlongzzz/backup-restore-n8n-in-docker/refs/heads/main/auto_install_n8n_with_docker_and_ssl_domain.sh)"
 ```
-#in new self host import
+#in new self host / upload /wget 2 json files above to home directory and run import
 
 ```
 docker cp ~/export.json n8n:/home/node/.n8n

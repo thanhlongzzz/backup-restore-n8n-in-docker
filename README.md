@@ -12,6 +12,7 @@ docker exec -it n8n /bin/sh -c "n8n export:workflow --all" > export.json
 #backup credentials
 docker exec -it n8n /bin/sh -c "n8n export:credentials --all" > export_cre.json
 ```
+*open export.json and export_cre.json delete excess on the top of the json file
 #in new self host auto install n8n:
 
 ```

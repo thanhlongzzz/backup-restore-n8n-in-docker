@@ -474,7 +474,8 @@ configure_nginx() {
     sudo tee /etc/nginx/sites-available/n8n > /dev/null <<EOL
 server {
     server_name ${DOMAIN};
-
+    client_max_body_size 100m;
+    
     location / {
         proxy_pass http://localhost:5678;
         proxy_set_header Host \$host;

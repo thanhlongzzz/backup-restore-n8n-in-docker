@@ -392,7 +392,19 @@ services:
     command: postgres -c 'timezone=Asia/Ho_Chi_Minh'
     networks:
       - n8n-network
-
+  redis: # <-- Dịch vụ Redis mới được thêm vào
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    volumes: # <-- Thêm volume nếu bạn muốn dữ liệu Redis được lưu trữ bền vững
+      - redis_data:/data
+    networks:
+      - n8n-network
+    healthcheck: # <-- Tùy chọn: Thêm healthcheck cho Redis
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   n8n:
     image: n8nio/n8n:latest
     container_name: n8n
@@ -419,11 +431,18 @@ services:
       - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
       - TZ=Asia/Ho_Chi_Minh
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+      # Tùy chọn: Thêm biến môi trường để n8n sử dụng Redis (nếu cần)
+      # - QUEUE_BULL_REDIS_HOST=redis
+      # - QUEUE_BULL_REDIS_PORT=6379
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - n8n_data:/home/node/.n8n
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - n8n-network
 
@@ -434,6 +453,7 @@ networks:
 volumes:
   postgres_data:
   n8n_data:
+  redis_data:
 EOL
     
     # Khoi chay PostgreSQL truoc
@@ -633,7 +653,7 @@ add_ssl_config_manually() {
     sudo tee /etc/nginx/sites-available/n8n > /dev/null <<EOL
 server {
     server_name ${DOMAIN};
-    
+    client_max_body_size 100m;
     listen 443 ssl;
     ssl_certificate ${ssl_cert_path};
     ssl_certificate_key ${ssl_key_path};

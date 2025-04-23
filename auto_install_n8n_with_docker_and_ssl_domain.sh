@@ -412,6 +412,7 @@ services:
     ports:
       - "5678:5678"
     environment:
+      - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
       - N8N_BASIC_AUTH_ACTIVE=true
       - N8N_BASIC_AUTH_USER=${N8N_USER}
       - N8N_BASIC_AUTH_PASSWORD=${N8N_PASS}
